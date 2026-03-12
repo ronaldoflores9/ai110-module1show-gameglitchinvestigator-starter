@@ -25,15 +25,38 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+### Game Purpose
+
+Game Glitch Investigator is a number-guessing game built with Streamlit. The player picks a difficulty (Easy: 1–20, Normal: 1–100, Hard: 1–50), then has a limited number of attempts to guess a randomly chosen secret number. After each guess the game gives a "Too High" or "Too Low" hint. Guessing correctly earns points — fewer points the more attempts it takes. The twist: the original AI-generated code shipped with several bugs, and the real challenge is finding and fixing them.
+
+### Bugs Found
+
+1. **Out-of-range inputs accepted silently** — `parse_guessrun` would accept any integer (e.g. `0`, `-5`, `999`) even if it was outside the current difficulty's valid range. Players could enter nonsense values with no error message.
+
+2. **Non-integer floats silently truncated** — entering `7.9` was converted to `7` via `int(float(raw))` with no warning. The player typed one value but the game evaluated a different one, making feedback confusing (e.g. "Too Low" when `7.9` rounds down to `7`).
+
+3. **Win-score off-by-one** — the score formula was `100 - 10 * (attempt_number + 1)`. Winning on the very first attempt gave `80` points instead of the expected `90`, and every subsequent win was similarly under-rewarded by 10 points.
+
+### Fixes Applied
+
+1. **Range validation in `parse_guess`** — added `low` and `high` parameters (defaulting to `1` and `100`). After parsing, the function now checks `value < low or value > high` and returns a descriptive error message (e.g. *"Guess must be between 1 and 100."*). `app.py` was updated to pass the difficulty-specific range on every call.
+
+2. **Reject non-integer floats** — `parse_guess` now checks whether a decimal input is a whole number (`float_val != int(float_val)`). If not, it returns an error suggesting the nearest whole numbers (e.g. *"Please enter a whole number (e.g. 7 or 8)."*). Clean whole-number floats like `7.0` are still accepted.
+
+3. **Fix win-score formula** — changed `100 - 10 * (attempt_number + 1)` to `100 - 10 * attempt_number`. Winning on attempt 1 now correctly yields `90` points, attempt 2 yields `80`, and so on, with a minimum of `10`.
 
 ## 📸 Demo
-
 
 - ![alt text](image.png)
 
 ## 🚀 Stretch Features
 
-- [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
+### Screenshot of the Challenge 1 being completed 
+![alt text](image-1.png)
+
+### Challenge #2 - New Feature: High Score
+
+![alt text](image-2.png)
+
+For this challenge I explain to the AI agent the new feature that I wanted to add and how I wanted it. This feature was the high score record and with the AI in agent mode helped me create the feature.
+
