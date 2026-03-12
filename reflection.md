@@ -17,7 +17,7 @@ The first time I ran the game, it looked perfect. However, once I started testin
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
-For this project, I used the integrated vsCode Copilot tool. One of the suggestions the AI gave me was to correct the logic of the tracks because it was reversed. And although I read it multiple times, it wasn't until the AI clarified it for me that I fully understood. However, to correct the attempts, the first suggestion the AI gave me was wrong, but that was because my instructions on what needed to be fixed were not precise. However, after giving it all the context, it helped me fix the bug efficiently. 
+For this project, I used the integrated vsCode Copilot tool. One of the suggestions the AI gave me was to correct the logic of the tracks because it was reversed. Although I read it multiple times, it wasn't until the AI clarified it for me that I fully understood. However, to correct the attempts, the first suggestion the AI gave me was wrong, but that was because my instructions on what needed to be fixed were not precise. However, after giving it all the context, it helped me fix the bug efficiently. 
 
 
 ## 3. Debugging and testing your fixes
@@ -34,12 +34,10 @@ I verified that the bug was completely fixed by running the different test cases
 ## 4. What did you learn about Streamlit and state?
 
 - In your own words, explain why the secret number kept changing in the original app.
-
-Originally, the secret number in the application kept changing because Streamlit rebuilt the application every time the user interacted with it. Since this number was generated randomly without being saved, it caused the number to change every time the application was rebuilt. Therefore, it caused the number to change while the user continued playing.
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-For someone who has never used Streamlit, the concept of “reruns” can be explained in different ways. To begin with, I can explain it as the app restarting from scratch each time. Due to this behavior, variables are not saved.
 - What change did you make that finally gave the game a stable secret number?
-I made several changes to ensure there is a stable secret number. However, the main change was that, together with the AI, I helped establish a state. This state helps us ensure that, regardless of whether the app rebuilds that number, it is saved.
+
+Originally, the secret number in the application kept changing because Streamlit rebuilt the application every time the user interacted with it. Since this number was generated randomly without being saved, it caused the number to change every time the application was rebuilt. Therefore, it caused the number to change while the user continued playing. For someone who has never used Streamlit, the concept of “reruns” can be explained in different ways. To begin with, I can explain it as the app restarting from scratch each time. Due to this behavior, variables are not saved. I made several changes to ensure there is a stable secret number. However, the main change was that, together with the AI, I helped establish a state. This state helps us ensure that, regardless of whether the app rebuilds that number, it is saved.
 
 
 ---
@@ -47,7 +45,7 @@ I made several changes to ensure there is a stable secret number. However, the m
 ## 5. Looking ahead: your developer habits
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
+- This could be a testing habit, a prompting strategy, or a way you used Git.
 - What is one thing you would do differently next time you work with AI on a coding task?
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
 
