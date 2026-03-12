@@ -13,6 +13,7 @@ difficulty = st.sidebar.selectbox(
     "Difficulty",
     ["Easy", "Normal", "Hard"],
     index=1,
+    key="difficulty",
 )
 
 attempt_limit_map = {
@@ -44,6 +45,7 @@ if st.session_state.game_difficulty != difficulty:
     st.session_state.secret = random.randint(low, high)
     st.session_state.attempts = 0
     st.session_state.score = 0
+    st.session_state.final_score = None
     st.session_state.status = "playing"
     st.session_state.history = []
     st.session_state.game_difficulty = difficulty
@@ -59,6 +61,9 @@ if "status" not in st.session_state:
 
 if "history" not in st.session_state:
     st.session_state.history = []
+
+if "final_score" not in st.session_state:
+    st.session_state.final_score = None
 
 st.subheader("Make a guess")
 
@@ -90,6 +95,7 @@ with col3:
 if new_game:
     st.session_state.attempts = 0
     st.session_state.score = 0
+    st.session_state.final_score = None
     st.session_state.secret = random.randint(low, high)
     st.session_state.status = "playing"
     st.session_state.history = []
@@ -99,9 +105,11 @@ if new_game:
 
 if st.session_state.status != "playing":
     if st.session_state.status == "won":
-        st.success("You already won. Start a new game to play again.")
+        st.success("You won! Start a new game to play again.")
     else:
         st.error("Game over. Start a new game to try again.")
+    if st.session_state.final_score is not None:
+        st.metric("Final Score", st.session_state.final_score)
     st.stop()
 
 if submit:
@@ -129,11 +137,9 @@ if submit:
         if outcome == "Win":
             st.balloons()
             st.session_state.status = "won"
+            st.session_state.final_score = st.session_state.score
             is_new_record = save_high_score(st.session_state.score, difficulty)
-            win_msg = (
-                f"You won! The secret was {st.session_state.secret}. "
-                f"Final score: {st.session_state.score}"
-            )
+            win_msg = f"You won! The secret was {st.session_state.secret}."
             if is_new_record:
                 win_msg += " 🏆 New high score!"
             st.success(win_msg)
@@ -141,10 +147,9 @@ if submit:
         else:
             if st.session_state.attempts >= attempt_limit:
                 st.session_state.status = "lost"
+                st.session_state.final_score = st.session_state.score
                 st.error(
-                    f"Out of attempts! "
-                    f"The secret was {st.session_state.secret}. "
-                    f"Score: {st.session_state.score}"
+                    f"Out of attempts! The secret was {st.session_state.secret}."
                 )
                 st.rerun()
 

@@ -41,6 +41,10 @@ Game Glitch Investigator is a number-guessing game built with Streamlit. The pla
 
 5. **"Too High" on even attempts secretly awarded points** — the `update_score` function gave `+5` points whenever a "Too High" guess landed on an even-numbered attempt. Wrong guesses should never reward the player; this inflated scores during longer games and masked the score-reset bug.
 
+6. **Difficulty resets to Normal on New Game** — the difficulty `selectbox` had no `key`, so Streamlit re-rendered it with the default `index=1` (Normal) on every rerun triggered by "New Game" or a guess submit. The selected difficulty was lost.
+
+7. **Final score not displayed after game ends** — when a game ended (win or loss), `st.rerun()` was called immediately, erasing the success/error message before the player could see their score. The game-over screen showed no score at all.
+
 ### Fixes Applied
 
 1. **Range validation in `parse_guess`** — added `low` and `high` parameters (defaulting to `1` and `100`). After parsing, the function now checks `value < low or value > high` and returns a descriptive error message (e.g. *"Guess must be between 1 and 100."*). `app.py` was updated to pass the difficulty-specific range on every call.
@@ -52,6 +56,10 @@ Game Glitch Investigator is a number-guessing game built with Streamlit. The pla
 4. **Reset score on new game** — added `st.session_state.score = 0` to both the "New Game" button handler and the difficulty-change block in `app.py`, so each game starts from zero.
 
 5. **Remove "Too High" even-attempt bonus** — simplified `update_score` so "Too High" always subtracts 5, same as "Too Low". Wrong guesses now consistently penalize regardless of attempt number.
+
+6. **Persist difficulty selection** — added `key="difficulty"` to the `selectbox` so Streamlit stores the chosen difficulty in session state and preserves it across reruns.
+
+7. **Persist final score on game-over screen** — `st.session_state.final_score` is now saved before `st.rerun()` on both win and loss. The game-over screen displays it with `st.metric()` so the player always sees their result. It resets to `None` when a new game starts.
 
 ## 📸 Demo
 
