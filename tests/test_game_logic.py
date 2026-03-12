@@ -160,11 +160,10 @@ class TestGameFinishCondition:
         assert final_score >= 10
 
     def test_update_score_on_too_high(self):
-        """Score penalty on 'Too High' should depend on even/odd attempts."""
-        score_even_attempt = update_score(100, "Too High", 0)
-        score_odd_attempt = update_score(100, "Too High", 1)
-        # Even attempts (0) get +5, odd attempts get -5
-        assert score_even_attempt == 105
+        """Score should decrease by 5 on 'Too High', regardless of attempt number."""
+        score_even_attempt = update_score(100, "Too High", 2)
+        score_odd_attempt = update_score(100, "Too High", 3)
+        assert score_even_attempt == 95
         assert score_odd_attempt == 95
 
     def test_update_score_on_too_low(self):
@@ -303,6 +302,26 @@ class TestEdgeCaseInputs:
         score_n = update_score(0, "Win", attempt_number=3)
         score_n1 = update_score(0, "Win", attempt_number=4)
         assert score_n - score_n1 == 10
+
+    def test_fewer_attempts_always_yields_higher_win_score(self):
+        """Winning in 1 attempt from score 0 must beat winning in 4 attempts from score 0."""
+        # Simulate 4-attempt game: 3 wrong guesses then a win
+        score = 0
+        score = update_score(score, "Too Low", 1)
+        score = update_score(score, "Too High", 2)
+        score = update_score(score, "Too Low", 3)
+        score = update_score(score, "Win", 4)
+        four_attempt_score = score
+
+        one_attempt_score = update_score(0, "Win", 1)
+
+        assert one_attempt_score > four_attempt_score
+
+    def test_too_high_always_penalises_regardless_of_attempt_number(self):
+        """'Too High' should always subtract 5, never award points."""
+        for attempt in range(1, 10):
+            score = update_score(100, "Too High", attempt)
+            assert score == 95, f"Expected 95 at attempt {attempt}, got {score}"
 
 
 # ============================================================================
