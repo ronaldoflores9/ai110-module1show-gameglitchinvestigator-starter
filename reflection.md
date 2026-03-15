@@ -27,7 +27,7 @@ For this project, I used the integrated vsCode Copilot tool. One of the suggesti
   and what it showed you about your code.
 - Did AI help you design or understand any tests? How?
 
-I verified that the bug was completely fixed by running the different test cases created by the AI and additionally manually testing each part of the application that was modified, to ensure that the fix would not affect any other area that was already fully functional. The AI was very efficient in creating each test case and additionally explaining to me what each one did to verify that I was not creating unnecessary test cases.
+I verified that the bug was completely fixed by running the different test cases created by the AI and additionally manually testing each part of the application that was modified, to ensure that the fix would not affect any other area that was already fully functional. One manual test that I ran was when the AI and I fix the restart game I restart the application a play the game again I tried to restart the game to see if works. The AI was very efficient in creating each test case and additionally explaining to me what each one did to verify that I was not creating unnecessary test cases.
 
 ---
 
